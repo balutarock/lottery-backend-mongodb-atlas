@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const env = require("dotenv");
 
 const app = express();
@@ -12,7 +12,14 @@ async function main() {
   // we'll add code here soon
   const uri = process.env.DB_CONNECT;
   console.log("uri >> ", uri);
-  client = new MongoClient(uri);
+  client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+  });
+  console.log("client >> ", client)
   try {
     client = await client.connect();
     await app.listen(PORT, () => {
